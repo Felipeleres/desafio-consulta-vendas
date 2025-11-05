@@ -11,6 +11,7 @@ import com.devsuperior.dsmeta.entities.Sale;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
@@ -18,7 +19,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             countQuery = "SELECT COUNT(obj) FROM Sale obj JOIN obj.seller WHERE obj.date BETWEEN :dataMinima AND :dataMaxima AND UPPER(obj.seller.name) LIKE UPPER(CONCAT('%',:name,'%'))")
     Page<SaleReportDTO> generateSaleReport (LocalDate dataMinima, LocalDate dataMaxima, String name, Pageable pageable);
 
-    @Query(value = "SELECT new com.devsuperior.dsmeta.dto.SaleSummaryDTO(obj.seller.name,SUM(obj.amount)) FROM Sale obj JOIN obj.seller WHERE obj.date BETWEEN :dataMinima AND :dataMaxima GROUP BY obj.seller.name ORDER BY SUM(obj.amount) DESC",
+    @Query(value = "SELECT new com.devsuperior.dsmeta.dto.SaleSummaryDTO(obj.seller.name,SUM(obj.amount)) FROM Sale obj JOIN obj.seller WHERE obj.date BETWEEN :dataMinima AND :dataMaxima GROUP BY obj.seller.name ORDER BY obj.seller.name ASC",
             countQuery = "SELECT COUNT(obj.seller.name) FROM Sale obj JOIN  obj.seller WHERE obj.date BETWEEN :dataMinima AND :dataMaxima" )
-    Page <SaleSummaryDTO> generateSummaryReport(LocalDate dataMinima, LocalDate dataMaxima,Pageable pageable);
+    List<SaleSummaryDTO> generateSummaryReport(LocalDate dataMinima, LocalDate dataMaxima);
 }

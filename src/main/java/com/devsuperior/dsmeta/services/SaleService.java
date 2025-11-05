@@ -52,7 +52,7 @@ public class SaleService {
 
 	}
 
-	public Page<SaleSummaryDTO> generateSummary(String minDate, String maxDate, Pageable pageable){
+	public List<SaleSummaryDTO> generateSummary(String minDate, String maxDate){
 
 		LocalDate dataMaxima;
 		LocalDate dataMinima;
@@ -69,7 +69,7 @@ public class SaleService {
 			dataMinima = LocalDate.parse(minDate);
 		}
 
-		Page <SaleSummaryDTO> saleSummary = repository.generateSummaryReport(dataMinima,dataMaxima,pageable);
+		List <SaleSummaryDTO> saleSummary = repository.generateSummaryReport(dataMinima,dataMaxima);
 
 		return saleSummary;
 	}
